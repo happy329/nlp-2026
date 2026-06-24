@@ -5,6 +5,8 @@ import os
 import csv
 import json
 from collections import Counter
+import sys
+sys.path.append(".")
 import config as cfg
 
 train_file = cfg.train_file

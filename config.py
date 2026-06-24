@@ -39,18 +39,18 @@ stopwords_file = "data/processed/hit_stopwords.txt"
 word2vec_model_file = "data/processed/word2vec.model"
 embedding_matrix_file = "data/processed/embedding_matrix.npy"
 
-word2vec_dim = 200
+word2vec_dim = 100
 word2vec_window = 5
 word2vec_min_count = 2
-
+epochs_word2vec = 10
 
 # 分类模型参数
-max_len = 200
-batch_size = 32
-epochs = 2
+max_len = 200#每条新闻分词后保留多少个词
+batch_size = 64
+epochs = 20
 learning_rate = 0.001
 
-num_classes = 10
+num_classes = 13
 hidden_dim = 128
 
 #jieba分词
@@ -82,3 +82,9 @@ bilstm_attention_cm_fig = "results/figures/bilstm_attention_confusion_matrix.png
 model_acc_fig = "results/figures/model_accuracy.png"
 model_f1_fig = "results/figures/model_f1.png"
 
+
+# 推荐模块后面会用
+sbert_index_file = "saved_index/sbert_embeddings.npy"
+tfidf_matrix_file = "saved_index/tfidf_matrix.pkl"
+tfidf_vectorizer_file = "saved_index/tfidf_vectorizer.pkl"
+news_ids_file = "saved_index/news_ids.json"

@@ -8,10 +8,8 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import numpy as np
-import config as cfg
-
 sys.path.append(".")
-
+import config as cfg
 from classification.textcnn import TextCNN
 
 

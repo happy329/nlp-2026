@@ -3,16 +3,13 @@
 
 ## 1.数据集获取
 
-百度网盘链接：[点击下载](https://pan.baidu.com/s/17YnbinvVVT3_Jc6l15dhrQ?pwd=ppr4)
+百度网盘链接：[点击下载](https://pan.baidu.com/s/1AfstxTgXyx23x8hm94sfGg?pwd=m3ah)
+提取码：m3ah
 
-提取码：ppr4
+里面有cnews_data.zip，包含train_csv, val_csv, test_csv， news_csv,解压后放到`data/processed/`
 
-里面包含cnews_raw，解压后放到`data/raw/`
-
-cnews_csv包含train_csv, val_csv, test_csv， news_csv，解压后放到`data/processed/`
-
-fenci_cibiao解压后放到`data/processed/`
-
+vocab.zip解压后放到`data/processed/`
+fenlei_pt文件夹里有训练好的三种分类模型的.pt，放到`saved_models/`
 
 
 ## 2.文件目录说明

@@ -3,11 +3,12 @@ import json
 import pandas as pd
 import numpy as np
 from gensim.models import Word2Vec
+import sys
+sys.path.append(".")
 import config as cfg
 
 train_file = cfg.train_fenci_file 
-vocab_file = cfg.vocab_file
-
+vocab_file = cfg.vocab_fil
 out_dir = cfg.processed_dir
 word2vec_model_file = cfg.word2vec_model_file
 embedding_matrix_file = cfg.embedding_matrix_file
@@ -16,6 +17,7 @@ vector_size = cfg.vector_size
 window = cfg.window
 min_count = cfg.min_count
 
+epochs = cfg.epochs_word2vec
 
 def load_sentences():
     df = pd.read_csv(train_file)
@@ -69,7 +71,8 @@ def main():
         window=window,
         min_count=min_count,
         sg=0,
-        workers=4
+        workers=4,
+        epochs=epochs
     )
 
     model.save(word2vec_model_file)

@@ -8,9 +8,8 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import numpy as np
-import config as cfg
-
 sys.path.append(".")
+import config as cfg
 
 from classification.bilstm_attention import BiLSTMAttention
 
@@ -268,7 +267,7 @@ def main():
     model = model.to(device)
 
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-4)
 
     train_losses = []
     val_losses = []
@@ -310,7 +309,7 @@ def main():
             torch.save({
                 "model_state_dict": model.state_dict(),
                 "vocab_size": vocab_size,
-                "embed_dim": embed_dim,
+                "embed_dim": embedding_matrix.shape[1],
                 "hidden_dim": hidden_dim,
                 "num_classes": num_classes,
                 "pad_id": pad_id,

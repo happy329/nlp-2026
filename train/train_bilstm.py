@@ -8,9 +8,8 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support
 from sklearn.metrics import classification_report, confusion_matrix
 import matplotlib.pyplot as plt
 import numpy as np
-import config as cfg
-
 sys.path.append(".")
+import config as cfg
 
 from classification.bilstm import BiLSTM
 
@@ -28,11 +27,10 @@ cm_fig_path = cfg.bilstm_cm_fig
 
 embedding_matrix_file = cfg.embedding_matrix_file
 
-max_len = cfg.max_len #200
-batch_size = cfg.batch_size #64
-# embed_dim = 64
+max_len = cfg.max_len
+batch_size = cfg.batch_size
 hidden_dim = cfg.hidden_dim
-epochs = cfg.epochs #
+epochs = cfg.epochs
 learning_rate = cfg.learning_rate
 
 
@@ -159,6 +157,34 @@ def evaluate(model, dataloader, criterion, device):
     return avg_loss, acc, precision, recall, f1, all_labels, all_preds
 
 
+def get_save_state_dict(model):
+    if isinstance(model, torch.nn.DataParallel):
+        return model.module.state_dict()
+
+    return model.state_dict()
+
+
+def load_state_dict_safely(model, state_dict):
+    first_key = list(state_dict.keys())[0]
+
+    if isinstance(model, torch.nn.DataParallel):
+        if first_key.startswith("module."):
+            model.load_state_dict(state_dict)
+        else:
+            model.module.load_state_dict(state_dict)
+    else:
+        if first_key.startswith("module."):
+            new_state_dict = {}
+
+            for key, value in state_dict.items():
+                new_key = key.replace("module.", "", 1)
+                new_state_dict[new_key] = value
+
+            model.load_state_dict(new_state_dict)
+        else:
+            model.load_state_dict(state_dict)
+
+
 def save_metrics(model_name, acc, precision, recall, f1):
     os.makedirs("results", exist_ok=True)
 
@@ -260,21 +286,30 @@ def main():
     embedding_matrix = torch.tensor(embedding_matrix, dtype=torch.float)
 
     model = BiLSTM(
-    pretrained_embedding=embedding_matrix,
-    hidden_dim=hidden_dim,
-    num_classes=num_classes,
-    pad_id=pad_id
-)
+        pretrained_embedding=embedding_matrix,
+        hidden_dim=hidden_dim,
+        num_classes=num_classes,
+        pad_id=pad_id
+    )
 
     model = model.to(device)
 
+    if torch.cuda.is_available() and torch.cuda.device_count() > 1:
+        print("使用GPU数量:", torch.cuda.device_count())
+        model = torch.nn.DataParallel(model)
+
     criterion = torch.nn.CrossEntropyLoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=1e-4)
 
     train_losses = []
     val_losses = []
 
-    best_val_acc = 0
+    best_val_loss = 999999
+    best_epoch = 0
+
+    patience = 3
+    min_delta = 0.0001
+    no_improve_count = 0
 
     for epoch in range(epochs):
         train_loss, train_acc = train_one_epoch(
@@ -296,7 +331,7 @@ def main():
         val_losses.append(val_loss)
 
         print("=" * 50)
-        print("Epoch:", epoch + 1)
+        print("Epoch:", epoch + 1, "/", epochs)
         print("Train Loss:", round(train_loss, 4))
         print("Train Acc:", round(train_acc, 4))
         print("Val Loss:", round(val_loss, 4))
@@ -305,21 +340,44 @@ def main():
         print("Val Recall:", round(val_recall, 4))
         print("Val F1:", round(val_f1, 4))
 
-        if val_acc > best_val_acc:
-            best_val_acc = val_acc
+        if val_loss < best_val_loss - min_delta:
+            best_val_loss = val_loss
+            best_epoch = epoch + 1
+            no_improve_count = 0
+
+            save_state_dict = get_save_state_dict(model)
 
             torch.save({
-                "model_state_dict": model.state_dict(),
+                "model_state_dict": save_state_dict,
                 "vocab_size": vocab_size,
-                "embed_dim": embed_dim,
+                "embed_dim": embedding_matrix.shape[1],
                 "hidden_dim": hidden_dim,
                 "num_classes": num_classes,
                 "pad_id": pad_id,
                 "max_len": max_len,
-                "label2id": label2id
+                "label2id": label2id,
+                "use_word2vec": True,
+                "best_epoch": best_epoch,
+                "best_val_loss": best_val_loss,
+                "best_val_acc": val_acc,
+                "best_val_f1": val_f1
             }, model_save_path)
 
             print("保存当前最优模型:", model_save_path)
+            print("当前最佳 epoch:", best_epoch)
+            print("当前最佳 Val Loss:", round(best_val_loss, 4))
+
+        else:
+            no_improve_count += 1
+
+            print("验证集 Loss 未提升次数:", no_improve_count, "/", patience)
+
+            if no_improve_count >= patience:
+                print("=" * 50)
+                print("触发早停")
+                print("最佳 epoch:", best_epoch)
+                print("最佳 Val Loss:", round(best_val_loss, 4))
+                break
 
     plot_loss(train_losses, val_losses)
 
@@ -327,7 +385,7 @@ def main():
     print("开始测试集评估")
 
     checkpoint = torch.load(model_save_path, map_location=device)
-    model.load_state_dict(checkpoint["model_state_dict"])
+    load_state_dict_safely(model, checkpoint["model_state_dict"])
 
     test_loss, test_acc, test_precision, test_recall, test_f1, test_labels, test_preds = evaluate(
         model,
