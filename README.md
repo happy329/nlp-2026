@@ -1,7 +1,7 @@
 # nlp-2026
 基于Transformer的中文新闻分类与摘要系统
 
-## 1.数据集获取
+## 1.数据集和分类模型权重获取
 
 百度网盘链接：[点击下载](https://pan.baidu.com/s/1AfstxTgXyx23x8hm94sfGg?pwd=m3ah)
 提取码：m3ah
