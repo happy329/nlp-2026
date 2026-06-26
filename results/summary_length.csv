@@ -1,0 +1,5 @@
+﻿method,avg_source_len,avg_reference_len,avg_summary_len,avg_compression_rate
+TextRank,107.7395,18.384,59.748,0.558426
+Pegasus-base zero-shot,107.7395,18.384,39.656,0.369939
+Pegasus-base + LCSTS fine-tuned,107.7395,18.384,17.324,0.16226
+Randeng-Pegasus-238M-Summary-Chinese,107.7395,18.384,18.323,0.171067

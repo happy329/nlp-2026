@@ -88,3 +88,60 @@ sbert_index_file = "saved_index/sbert_embeddings.npy"
 tfidf_matrix_file = "saved_index/tfidf_matrix.pkl"
 tfidf_vectorizer_file = "saved_index/tfidf_vectorizer.pkl"
 news_ids_file = "saved_index/news_ids.json"
+
+
+# 成员B：自动摘要数据与模型路径
+lcsts_dir = "data/LCSTS"
+lcsts_raw_dir = "data/LCSTS/raw"
+lcsts_train_raw_file = "data/LCSTS/raw/train.jsonl"
+lcsts_val_raw_file = "data/LCSTS/raw/valid.jsonl"
+lcsts_test_raw_file = "data/LCSTS/raw/test_public.jsonl"
+
+# 全量整理文件，保留给需要完整实验时使用
+lcsts_train_full_file = "data/LCSTS/train.csv"
+lcsts_val_full_file = "data/LCSTS/valid.csv"
+lcsts_test_full_file = "data/LCSTS/test_public.csv"
+
+# 课设默认使用小规模子集，训练和评价速度更合适
+lcsts_train_file = "data/LCSTS/train_small.csv"
+lcsts_val_file = "data/LCSTS/valid_small.csv"
+lcsts_test_file = "data/LCSTS/test_public_small.csv"
+lcsts_eval_file = lcsts_val_file
+lcsts_train_limit = 50000
+lcsts_val_limit = 2000
+lcsts_test_limit = 725
+
+summary_model_dir = "saved_models/summary_model"
+pegasus_base_model = "IDEA-CCNL/Randeng-Pegasus-238M-Chinese"
+public_summary_model = "IDEA-CCNL/Randeng-Pegasus-238M-Summary-Chinese"
+
+summary_max_source_len = 512
+summary_max_target_len = 64
+summary_min_target_len = 10
+summary_num_beams = 4
+summary_train_epochs = 3
+summary_train_batch_size = 4
+summary_eval_batch_size = 4
+summary_learning_rate = 5e-5
+
+rouge_score_file = "results/rouge_score.csv"
+bertscore_file = "results/bertscore.csv"
+summary_length_file = "results/summary_length.csv"
+summary_examples_file = "results/summary_examples.csv"
+summary_compare_fig = "results/figures/summary_compare.png"
+
+
+# 成员B：关键词提取数据路径与结果路径
+csl_dir = "data/CSL"
+csl_raw_dir = "data/CSL/raw"
+csl_raw_file = "data/CSL/raw/csl_40k.tsv"
+csl_file = "data/CSL/csl.csv"
+
+keyword_scores_file = "results/keyword_scores.csv"
+keyword_examples_file = "results/keyword_examples.csv"
+keyword_compare_fig = "results/figures/keyword_method_compare.png"
+
+keyword_top_k = 10
+keyword_window_size = 4
+keyword_max_features = 50000
+keybert_model = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"

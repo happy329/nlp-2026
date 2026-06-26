@@ -11,6 +11,12 @@
 vocab.zip解压后放到`data/processed/`
 fenlei_pt文件夹里有训练好的三种分类模型的.pt，放到`saved_models/`
 
+成员 B 的 LCSTS 默认使用小规模子集，避免全量数据过大。项目中保留：
+
+`data/LCSTS/train_small.csv`、`valid_small.csv`、`test_public_small.csv`。
+
+如需重新生成小数据，请先把 LCSTS 原始 `jsonl` 文件放回 `data/LCSTS/raw/`，再运行 `python summarization/prepare_lcsts.py`。
+
 
 ## 2.文件目录说明
 
@@ -52,12 +58,29 @@ nlp_final/
 │   ├── train_bilstm.py
 │   ├── train_bilstm_attention.py
 │
+├── common/
+│   └── text_utils.py
+│
 ├── summarization/
-│		summarization/prepare_lcsts.py
-│   summarization/train_summary_model.py
-│   summarization/t5_summary.py 和(或) pegasus_summary.py
-│   summarization/textrank_summary.py
-│   summarization/summary_api.py
+│   ├── prepare_lcsts.py
+│   ├── train_summary_model.py
+│   ├── textrank_summary.py
+│   ├── pegasus_base_summary.py
+│   ├── pegasus_finetuned_summary.py
+│   ├── randeng_pegasus_summary.py
+│   ├── pegasus_summary.py
+│   └── summary_api.py
+│
+├── keyword/
+│   ├── prepare_csl.py
+│   ├── tfidf_keywords.py
+│   ├── textrank_keywords.py
+│   ├── keybert_keywords.py
+│   └── keyword_api.py
+│
+├── evaluate/
+│   ├── eval_summary.py
+│   └── eval_keywords.py
 │
 ├── recommendation/
 │   ├── tfidf_recommender.py

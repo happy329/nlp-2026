@@ -1,0 +1,5 @@
+﻿method,bertscore_f1
+TextRank,0.624102
+Pegasus-base zero-shot,0.615629
+Pegasus-base + LCSTS fine-tuned,0.668797
+Randeng-Pegasus-238M-Summary-Chinese,0.672651

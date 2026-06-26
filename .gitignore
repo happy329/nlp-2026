@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+data/LCSTS/
+data/CSL/
+saved_models/summary_model/
+transfer/*.tar.gz
+transfer/*.tar.gz.sha256
+results/*.log
