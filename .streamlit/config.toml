@@ -1,0 +1,45 @@
+[server]
+enableStaticServing = true
+
+[[theme.fontFaces]]
+family = "ComicNeue"
+url = "app/static/ComicNeue-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "ComicNeue"
+url = "app/static/ComicNeue-Bold.ttf"
+style = "normal"
+weight = 700
+
+[[theme.fontFaces]]
+family = "Fredoka"
+url = "app/static/Fredoka-Regular.ttf"
+style = "normal"
+weight = 400
+
+[[theme.fontFaces]]
+family = "SourceCodePro"
+url = "app/static/SourceCodePro-Regular.ttf"
+style = "normal"
+weight = 400
+
+[theme]
+primaryColor = "#ff6b6b"
+backgroundColor = "#fff9e6"
+secondaryBackgroundColor = "#f0f8ff"
+textColor = "#2d3436"
+linkColor = "#fd79a8"
+borderColor = "#74b9ff"
+showWidgetBorder = true
+baseRadius = "1rem"
+font = "ComicNeue"
+headingFont = "Fredoka"
+codeFont = "SourceCodePro"
+codeBackgroundColor = "#e8f4fd"
+showSidebarBorder = true
+
+[theme.sidebar]
+backgroundColor = "#e8f4fd"
+secondaryBackgroundColor = "#fff0f5"

@@ -1,0 +1,5 @@
+﻿method,rouge_1,rouge_2,rouge_l
+TextRank,0.218403,0.121788,0.183273
+Pegasus-base zero-shot,0.219394,0.117498,0.186056
+Pegasus-base + LCSTS fine-tuned,0.3299,0.20203,0.295376
+Randeng-Pegasus-238M-Summary-Chinese,0.338064,0.21393,0.305876
